@@ -38,19 +38,20 @@ jobs:
 
     - name: Build with Maven
       run: mvn clean package -DskipTests
+      working-directory: ./backend
 
     - name: Build Docker image
       run: docker build -t websocket_demo:latest ./backend
 
     - name: Run tests
       run: mvn test
+      working-directory: ./backend
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Push Docker image
-      uses: docker/build-push-action@v2
-      with:
-        context: ./backend
-        push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/websocket_demo:latest
-        secrets:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }} 
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/websocket_demo:latest 
