@@ -15,7 +15,12 @@ document.getElementById = jest.fn().mockImplementation((id) => {
   if (id === 'message') return { value: 'Test message', focus: jest.fn() };
   if (id === 'chat') return { appendChild: jest.fn(), scrollTop: 0, scrollHeight: 100 };
   if (id === 'userList') return { innerHTML: '' };
-  return { style: {}, innerHTML: '', value: '' };
+  if (id === 'messageInput') return { 
+    value: 'Test message', 
+    addEventListener: jest.fn(),
+    focus: jest.fn()
+  };
+  return { style: {}, innerHTML: '', value: '', addEventListener: jest.fn() };
 });
 
 // Importiere die zu testenden Funktionen
