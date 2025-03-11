@@ -127,13 +127,6 @@ function sendMessage() {
     }
 }
 
-// Event-Listener für Enter-Taste bei Nachrichteneingabe
-document.getElementById('messageInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        sendMessage();
-    }
-});
-
 // Event-Listener für Enter-Taste bei Username-Eingabe
 document.getElementById('usernameInput').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
@@ -141,5 +134,38 @@ document.getElementById('usernameInput').addEventListener('keypress', function(e
     }
 });
 
+function init() {
+    // Alle Event-Listener hier platzieren
+    const messageInput = document.getElementById('messageInput');
+    if (messageInput) {
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    }
+    
+    // Weitere Event-Listener...
+}
+
 // Initial WebSocket-Verbindung herstellen
-connect(); 
+connect();
+
+// Am Ende von app.js
+if (typeof module !== 'undefined') {
+  module.exports = {
+    connect,
+    setUsername,
+    addMessage,
+    sendMessage,
+    init // Initialisierungsfunktion exportieren
+  };
+} else {
+    // Nur im Browser ausführen, nicht in der Test-Umgebung
+    window.addEventListener('DOMContentLoaded', init);
+} 
+
+// Mock für localStorage
+global.localStorage = {
+  setItem: jest.fn() // Stelle sicher, dass es ein jest.fn() ist
+}; 
