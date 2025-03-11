@@ -1,3 +1,49 @@
+Skip to content
+Navigation Menu
+DinhPhucNguyen
+M324
+
+Type / to search
+Code
+Issues
+Pull requests
+1
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+Commit 9b5494e
+Preview
+Give feedback
+DinhPhucNguyen
+DinhPhucNguyen
+authored
+1 hour ago
+Verified
+Create package.json
+main
+1 parent 
+17f6b51
+ commit 
+9b5494e
+File tree
+Filter files…
+frontend
+package.json
+1 file changed
++25
+-0
+lines changed
+Search within code
+ 
+‎frontend/package.json
++25
+
+
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,25 @@
 {
   "name": "frontend",
   "version": "1.0.0",
@@ -7,9 +53,7 @@
     "start": "node index.js",
     "build": "webpack --mode production",
     "lint": "eslint .",
-    "lint:css": "stylelint '**/*.css'",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "lint:css": "stylelint '**/*.css'"
   },
   "dependencies": {
     "react": "^17.0.2",
@@ -22,17 +66,14 @@
     "stylelint": "^13.13.1",
     "stylelint-config-standard": "^22.0.0",
     "webpack": "^5.52.0",
-    "webpack-cli": "^4.8.0",
-    "jest": "^29.5.0",
-    "@babel/preset-env": "^7.20.2",
-    "babel-jest": "^29.5.0"
-  },
-  "jest": {
-    "testEnvironment": "jsdom",
-    "moduleFileExtensions": ["js", "jsx"],
-    "transform": {
-      "^.+\\.(js|jsx)$": "babel-jest"
-    },
-    "testMatch": ["**/__tests__/**/*.js", "**/?(*.)+(spec|test).js"]
+    "webpack-cli": "^4.8.0"
   }
 }
+0 commit comments
+Comments
+0
+ (0)
+Comment
+You're receiving notifications because you're subscribed to this thread.
+
+Create package.json · DinhPhucNguyen/M324@9b5494e 
