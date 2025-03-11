@@ -1,261 +1,237 @@
-Gruppe 9 
-Phuc Berzan Muhamednafi
+Gruppenchat-Projekt
 
-Projekt 
-Ein Chat in der ein Gruppe die Zugrif ff haben sich gegenseitig anschreiben kann (Gruppenchat).
+📚 Projektbeschreibung
 
+Ein Echtzeit-Gruppenchat, in dem eine Gruppe von Nutzern miteinander kommunizieren kann. Die Anwendung basiert auf Spring Boot im Backend und JavaScript mit WebSockets im Frontend. Nachrichten werden in einer MySQL-Datenbank gespeichert.
 
-Projektstruktur
+🛠️ Projektstruktur
 
-Backend:
+💻 Backend
+
 Technologie: Spring Boot
-Funktionalität: Verwaltet WebSocket-Verbindungen und speichert Nachrichten in einer MySQL-Datenbank.
+
+Funktionalität: Verwaltung der WebSocket-Verbindungen & Speicherung der Nachrichten
+
 Wichtige Komponenten:
-ChatHandler: Verarbeitet WebSocket-Nachrichten.
-Message: Entität für gespeicherte Nachrichten.
 
-Frontend:
+ChatHandler: Verarbeitung der WebSocket-Nachrichten
+
+Message: Entität zur Speicherung von Nachrichten
+
+🌐 Frontend
+
 Technologie: JavaScript mit WebSockets
-Funktionalität: Bietet eine Benutzeroberfläche für den Chat.
+
+Funktionalität: Bereitstellung der Benutzeroberfläche
+
 Wichtige Dateien:
-app.js: Handhabt WebSocket-Verbindungen und UI-Interaktionen.
-index.html: Grundlegendes HTML-Layout.
-styles.css: Styling der Benutzeroberfläche.
 
-Datenbank:
+app.js: WebSocket-Verbindungen & UI-Interaktionen
+
+index.html: Grundlegendes HTML-Layout
+
+styles.css: Styling der Benutzeroberfläche
+
+🏛️ Datenbank
+
 Technologie: MySQL
-Struktur: Eine Tabelle messages zur Speicherung von Chat-Nachrichten.
 
-Monitoring und Logging
-Grafana: Visualisierung von Metriken und Logs.
-Prometheus: Sammlung und Speicherung von Metriken.
-Loki: Sammlung und Speicherung von Logs.
+Struktur: Eine Tabelle messages zur Speicherung der Chat-Nachrichten
 
-Docker-Setup
-docker-compose.yml: Definiert die Container für Backend, Frontend, Datenbank, Grafana, Prometheus und Loki.
-Netzwerk: Alle Dienste sind über ein gemeinsames Docker-Netzwerk verbunden.
+📊 Monitoring & Logging
 
-Diese Struktur ermöglicht eine skalierbare und gut überwachte Chat-Anwendung mit Echtzeit-Kommunikation.nstallations- und Deployment-Anleitung
+Grafana: Visualisierung von Metriken & Logs
 
+Prometheus: Sammlung & Speicherung von Metriken
 
-Voraussetzungen
+Loki: Sammlung & Speicherung von Logs
 
--Docker: Stelle sicher, dass Docker auf deinem Computer installiert ist. Es ermöglicht das Ausführen von Anwendungen in Containern.
--Docker Compose: Ein Tool, um mehrere Docker-Container gleichzeitig zu starten.
+🛠️ Installation & Deployment
 
+✅ Voraussetzungen
 
-Schritt-für-Schritt-Anleitung
-1. Projekt herunterladen:
-Lade das Projekt von der Quelle (z.B. GitHub) auf deinen Computer herunter.
-2.Docker starten:
-Öffne Docker auf deinem Computer. Stelle sicher, dass es läuft.
-3.Terminal öffnen:
-Öffne ein Terminal oder eine Eingabeaufforderung auf deinem Computer.
-4.Zum Projektverzeichnis navigieren:
-Wechsle in das Verzeichnis, in dem sich die docker-compose.yml-Datei befindet. Verwende dazu den Befehl:
-  "cd /pfad/zum/projekt"
-5.Anwendung starten:
-Gib im Terminal den folgenden Befehl ein, um alle Dienste zu starten:
-  "docker-compose up -d"
-Dieser Befehl startet die Anwendung im Hintergrund.
-6.Zugriff auf die Anwendung:
--Öffne einen Webbrowser und gehe zu http://localhost, um die Chat-Anwendung zu sehen.(Frontend)
--Grafana ist unter http://localhost:3000 erreichbar, um Metriken und Logs zu überwachen. Zum Anmeldendaten sind : 
-username : admin
-Passwort: admin
-7.Überprüfung:
--Stelle sicher, dass alle Dienste laufen, indem du im Terminal den Befehl eingibst:
-  "docker-compose ps"
--Dies zeigt dir den Status aller Container an.
+Docker: Installiert und betriebsbereit
 
-Diese Anleitung hilft dir, die Anwendung einfach zu installieren und zu starten, ohne tiefere technische Kenntnisse zu benötigen.
+Docker Compose: Zum gleichzeitigen Starten mehrerer Container
 
+✈ Schritt-für-Schritt-Anleitung
 
-Auflistung der verwendeten Tools
+Projekt herunterladen: Klone das Repository mit git clone <repository-url>
 
-1.Jira
-Verwendung: Projektmanagement und Aufgabenverfolgung.
-Integration: Über GitHub Actions für automatisierte Workflows.
+Docker starten: Stelle sicher, dass Docker aktiv ist
 
-2.Grafana
-Verwendung: Visualisierung von Metriken und Logs.
-Funktion: Überwacht die Anwendung und zeigt Dashboards an.
-OAuth2: Integration mit GitHub für Authentifizierung.
+Terminal öffnen und ins Projektverzeichnis wechseln: cd /pfad/zum/projekt
 
-3.Loki
-Verwendung: Sammlung und Speicherung von Logs.
-Funktion: Analyse von Log-Daten in Grafana.
+Anwendung starten:
 
-4.Prometheus
-Verwendung: Sammlung und Speicherung von Metriken.
-Funktion: Überwacht die Leistung der Anwendung.
+docker-compose up -d
 
-5.GitHub
-Verwendung: Versionskontrolle und Quellcode-Hosting.
-Funktion: Verwaltung des Projektcodes und Zusammenarbeit.
+Dadurch startet die Anwendung im Hintergrund.
 
-6.GitHub Actions
-Verwendung: Automatisierung von CI/CD-Pipelines.
-Funktion: Automatisiert Tests, Builds und Deployments.
+Zugriff auf die Anwendung:
 
-7.Node.js
-Verwendung: Laufzeitumgebung für JavaScript im Frontend.
+Frontend: http://localhost
 
-8.npm
-Verwendung: Paketmanager für JavaScript-Abhängigkeiten.
+Grafana Dashboard: http://localhost:3000
 
-9.JDK 17
-Verwendung: Java Development Kit für das Backend.
+Anmeldedaten: admin / admin
 
-10.Maven
-Verwendung: Build-Tool für das Java-Backend.
+Status überprüfen:
 
-11.Linting Tools
-ESLint: Für JavaScript-Code-Qualität.
-Prettier: Für Code-Formatierung.
-Stylelint: Für CSS-Formatierung.
-Checkstyle: Für Java-Code-Qualität.
+docker-compose ps
 
-12.Unit Test Tools
-Jest: Für JavaScript-Tests im Frontend.
-JUnit: Für Java-Tests im Backend.
+Zeigt den Status aller Container an.
 
-13.Integrations-Tools
-Mockito: Für das Mocking in Java-Tests.
+📝 Verwendete Tools
 
-14.Docker
-Verwendung: Containerisierung der Anwendung und ihrer Dienste.
+🏰 Entwicklungs- & Projektmanagement-Tools
 
-Diese Liste umfasst die wichtigsten Tools, die in deinem Projekt verwendet werden, einschließlich der OAuth2-Integration mit Grafana und GitHub.Erklärung der Zusatzleistungen
+Jira - Projektmanagement & Aufgabenverfolgung
 
-1.CI/CD Deployment
-Beschreibung: Automatisierte Workflows mit GitHub Actions für kontinuierliche Integration und Bereitstellung.
-Vorteil: Erhöht die Effizienz und Zuverlässigkeit des Entwicklungsprozesses.
+GitHub - Versionskontrolle & Quellcode-Hosting
 
-            
-install --> build --> linting, intergrationtest, unittest (gleichzeitig)--> deploy
-                
-Jira intergration 
+GitHub Actions - CI/CD-Pipelines für Automatisierung
 
+Feature Branching - Entwicklung neuer Features auf separaten Branches
 
-Containerisierung mit Docker
-Beschreibung: Verwendung von Docker zur Containerisierung der Anwendung.
-Vorteil: Erleichtert die Bereitstellung und Skalierung der Anwendung.
+🔄 Monitoring & Logging
 
-compose name m324 
-db-1         kein port
-loki-1        3100
-backend1      8080
-promethues-1   9090
-frontend-1     80
-grafana-1     3000
+Grafana - Visualisierung von Metriken & Logs
 
+Loki - Sammlung & Speicherung von Logs
 
-Pipeline Stages
+Prometheus - Sammlung & Speicherung von Metriken
 
-1. Install
-Was passiert? Alle nötigen Abhängigkeiten und Tools werden installiert.
-Warum hier? Ohne die Installation können wir den Build-Prozess und Tests nicht durchführen.
-2. Build
-Was passiert? Der Code wird kompiliert und Artefakte erstellt.
-Warum hier? Wir stellen sicher, dass der Code korrekt gebaut wird und keine grundlegenden Fehler auftreten.
-3. Linting
-Was passiert? Der Code wird auf Stil- und Syntaxfehler überprüft.
-Warum nach dem Build? Wir prüfen nur den funktionierenden Code, der erfolgreich kompiliert wurde, um Zeit zu sparen.
-4. Unit-Tests und Integrationstests (gleichzeitig)
-Was passiert? Unit-Tests prüfen einzelne Code-Einheiten, während Integrationstests das Zusammenspiel testen.
-Warum gleichzeitig? Beide Tests decken unterschiedliche Aspekte ab, daher führen wir sie parallel aus, um Zeit zu sparen.
-5. Deploy
-Was passiert? Der getestete Code wird in die Produktionsumgebung überführt.
-Warum hier? Erst nach erfolgreichen Tests wird der Code in die Live-Umgebung deployt, um Fehler zu vermeiden.
-Warum diese Reihenfolge?
+OAuth2-Integration mit GitHub für Grafana-Authentifizierung
 
-Wir haben diese Reihenfolge gewählt, um Fehler früh zu erkennen, den Prozess zu beschleunigen und nur getesteten Code in die Produktionsumgebung zu bringen. Die parallele Ausführung von Unit- und Integrationstests spart Zeit, und das Deployment erfolgt nur, wenn der Code stabil ist.
+🛠️ Entwicklungs- & Test-Tools
 
-Jira und Tracking
-Mit Jira können wir jede Phase nachverfolgen und sicherstellen, dass wir bei Problemen schnell reagieren können. So bleibt der Prozess transparent und effizient.
+Node.js - Laufzeitumgebung für das Frontend
 
- 
-install --> build --> linting, intergrationtest, unittest (gleichzeitig)--> deploy
+npm - Paketmanager für JavaScript-Abhängigkeiten
 
-Jira intergration 
+JDK 17 - Java Development Kit für das Backend
 
+Maven - Build-Tool für das Java-Backend
 
+Linting Tools
 
-Unit Tests
-Frontend: Jest 
+ESLint (JS-Code-Qualität)
 
-"connect should initialize WebSocket connection:"
+Prettier (JS-Code-Formatierung)
 
-Testziel: Überprüfen, ob die WebSocket-Verbindung korrekt initialisiert wird.
-Warum?: Dies stellt sicher, dass die App in der Lage ist, eine WebSocket-Verbindung aufzubauen, was für die Kommunikation im Chat erforderlich ist.
+Stylelint (CSS-Formatierung)
 
-"setUsername should set the username and enable chat:"
+Checkstyle (Java-Code-Qualität)
 
-Testziel: Überprüfen, ob der Benutzername korrekt gesetzt wird und der Chat aktiviert wird.
-Warum?: Dieser Test stellt sicher, dass der Benutzername korrekt gespeichert wird und der Chat korrekt funktioniert, nachdem der Benutzername gesetzt wurde.
+Testing-Frameworks
 
-"sendMessage should send message via WebSocket:"
+Jest (Frontend-Tests)
 
-Testziel: Überprüfen, ob eine Nachricht über WebSocket gesendet wird.
-Warum?: Dies stellt sicher, dass Nachrichten ordnungsgemäß über die WebSocket-Verbindung an den Server gesendet werden.
+JUnit (Backend-Tests)
 
-Backend: 
+Mockito (Mocking für Integrationstests)
 
-Junit:
-Hauptsächlich für das Testen von Java-Komponenten.
-Mockito:
-Zum Mocken von Abhängigkeiten und Testen von Interaktionen.
+🛢 Docker-Setup
 
-"ChatHandlerTest:"
-Ziel: Testet die Methoden des ChatHandler, um sicherzustellen, dass WebSocket-Verbindungen korrekt verarbeitet werden.
-Beispiele:
-afterConnectionEstablished: Überprüft, ob eine neue Verbindung korrekt registriert wird.
+Container & Ports
 
-"handleTextMessage:"
-Testet, ob eingehende Nachrichten korrekt verarbeitet und gespeichert werden.
-MessageTest:
-Ziel: Überprüft die Getter und Setter der Message-Klasse.
-Warum: Sicherstellen, dass die Datenintegrität gewahrt bleibt und die Entität korrekt funktioniert.
+Name
 
-ingesamt (10 unittest)
+Container
+
+Port
+
+m324
+
+DB-1
+
+Kein Port
+
+loki-1
+
+Loki
+
+3100
+
+backend-1
+
+Backend
+
+8080
+
+prometheus-1
+
+Prometheus
+
+9090
+
+frontend-1
+
+Frontend
+
+80
+
+grafana-1
+
+Grafana
+
+3000
+
+⚙ CI/CD Pipeline
+
+Ablauf: install → build → linting, tests (parallel) → deploy
+
+Install - Installation aller Abhängigkeiten
+
+Build - Code kompilieren & Artefakte erstellen
+
+Linting - Code-Qualität prüfen
+
+Unit- & Integrationstests (parallel)
+
+Deploy - Bereitstellung in der Produktionsumgebung
+
+🔧 Testing
+
+Frontend: Jest
+
+✅ connect should initialize WebSocket connection
+
+✅ setUsername should set the username and enable chat
+
+✅ sendMessage should send message via WebSocket
+
+Backend: JUnit & Mockito
+
+✅ ChatHandlerTest - Testet WebSocket-Interaktionen
+
+✅ MessageTest - Sicherstellt, dass Nachrichten korrekt gespeichert werden
 
 Integrationstests
 
-Verwendete Technologien
+Technologien: JUnit, Spring Boot Test, H2-Datenbank
 
-JUnit:
-Für das Ausführen von Integrationstests im Java-Backend.
+Tests:
 
-Spring Boot Test:
-Zum Testen der gesamten Anwendungskonfiguration und der Interaktion zwischen Komponenten.
+WebSocket-Nachrichtenverarbeitung
 
-Durchführung der Integrationstests
-Ziel: Überprüfen, ob verschiedene Komponenten des Systems nahtlos zusammenarbeiten.
-Beispiele:
-WebSocket-Interaktionen: Testen, ob Nachrichten korrekt über WebSockets gesendet und empfangen werden.
-Datenbank-Interaktionen: Sicherstellen, dass Daten korrekt in der Datenbank gespeichert und abgerufen werden.
-Testumgebung:
-Verwendung einer In-Memory-Datenbank (H2) für Tests, um die Datenbanklogik zu überprüfen, ohne eine echte Datenbank zu benötigen.
-Warum diese Tests?
-Gesamtfunktionalität: Sicherstellen, dass alle Teile der Anwendung zusammenarbeiten.
-Fehlererkennung: Identifizieren von Problemen, die bei der Interaktion zwischen Komponenten auftreten können.
-Vertrauen in die Anwendung: Gewährleisten, dass die Anwendung in einer realistischen Umgebung korrekt funktioniert.
-Diese Tests sind entscheidend, um die Stabilität und Zuverlässigkeit der gesamten Anwendung sicherzustellen.
+Datenbank-Interaktionen
 
-Task-Tracking Integration
-Integration von Jira für Aufgabenverfolgung und Projektmanagement. (scrum)
-Vorteil: Verbessert die Organisation und Nachverfolgbarkeit von Aufgaben.
+End-to-End Funktionalität
 
-Monitoring mit Grafana und Loki
-Beschreibung: Überwachung der Anwendung mit Grafana Dashboards und Log-Analyse mit Loki.
-Vorteil: Bietet Einblicke in die Leistung und hilft bei der Fehlerbehebung.
+📈 Monitoring mit Grafana & Loki
 
-Feature Branching
-Beschreibung: Verwendung von Feature-Branches für die Entwicklung neuer Funktionen.
-Vorteil: Erleichtert die Zusammenarbeit und reduziert Konflikte im Code.
+Echtzeitüberwachung der Anwendung
 
-OAuth2-Integration mit GitHub in Grafana
-Beschreibung: Einrichtung von OAuth2 für die Authentifizierung in Grafana über GitHub.
-Vorteil: Erhöht die Sicherheit und vereinfacht die Benutzerverwaltung.
-Diese Zusatzleistungen verbessern die Qualität, Effizienz und Wartbarkeit des Projekts erheblich.
+Analyse von Logs zur Fehlerbehebung
+
+📘 Jira-Integration & Scrum
+
+Aufgabenverfolgung & Statusüberwachung über Jira
+
+Transparente Verwaltung von Entwicklungsschritten
+
+🚀 Fazit
+
+Diese strukturierte und skalierbare Chat-Anwendung bietet eine zuverlässige Echtzeitkommunikation, Monitoring & Logging, sowie eine CI/CD-Pipeline für eine nahtlose Entwicklung und Bereitstellung.
