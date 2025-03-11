@@ -168,4 +168,4 @@ if (typeof module !== 'undefined') {
 // Mock für localStorage
 global.localStorage = {
   setItem: jest.fn() // Stelle sicher, dass es ein jest.fn() ist
-}; 
+
