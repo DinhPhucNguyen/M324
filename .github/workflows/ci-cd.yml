@@ -9,119 +9,62 @@ on:
       - master
 
 jobs:
-  jira-integration:
-    name: Jira Integration
-    runs-on: ubuntu-latest
-    steps:
-      - name: Login to Jira
-        uses: atlassian/gajira-login@v3
-        env:
-          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
-          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-
-  install:
+  install-and-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Frontend Setup und Cache
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
 
-      - name: Install npm packages
-        working-directory: ./frontend
-        run: |
-          npm install
-          npm install eslint eslint-config-prettier prettier stylelint stylelint-config-standard --save-dev
-          npm install jest --save-dev
+      # Backend Setup und Cache
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
 
+      # Docker Setup
       - name: Set up Docker
         uses: docker/setup-buildx-action@v1
 
-      - name: Install Docker Compose
+      - name: Install Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-compose
-
-      - name: Install Loki Docker Plugin
-        run: |
           docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions || true
 
-  build:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # Frontend Build und Install
+      - name: Frontend Setup
+        working-directory: ./frontend
+        run: |
+          npm ci
+          npm install eslint eslint-config-prettier prettier stylelint stylelint-config-standard jest --save-dev
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Build with Maven
+      # Backend Build
+      - name: Backend Build
         working-directory: ./backend
         run: mvn clean package -DskipTests
 
-  linting:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Backend Linting (Java)
-        run: |
-          ls -la ./backend
-          mvn -f ./backend/pom.xml checkstyle:check
-
-      - name: Frontend Linting (JavaScript/CSS)
-        working-directory: ./frontend
-        run: |
-          npm run lint || true
-          npm run lint:css || true
-
-      - name: SQL Linting
-        run: |
-          pip install sqlfluff
-          find ./backend/src/main/resources -name "*.sql" -type f -exec sqlfluff lint {} \;
-
-  unittest:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
+      # Cache Build Artifacts
+      - name: Cache Build Artifacts
+        uses: actions/cache@v2
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          path: |
+            ./frontend/node_modules
+            ./backend/target
+          key: ${{ runner.os }}-build-${{ github.sha }}
 
-      - name: Run Backend Unit Tests
-        working-directory: ./backend
-        run: mvn test -DexcludedGroups="integration"
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Run Frontend Unit Tests
-        working-directory: ./frontend
-        run: echo "Skipping tests with --passWithNoTests flag"
-
-      - name: Install Jest
-        run: npm install jest --save-dev
-
-  integrationtest:
+  test-and-lint:
+    needs: install-and-build
     runs-on: ubuntu-latest
-    needs: build
     services:
       db:
         image: mysql:8.0
@@ -139,32 +82,83 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
+      # Restore cached dependencies
+      - name: Restore Cache
+        uses: actions/cache@v2
         with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Run Backend Integration Tests
-        working-directory: ./backend
-        run: mvn verify -Pintegration-test || true
+          path: |
+            ./frontend/node_modules
+            ./backend/target
+          key: ${{ runner.os }}-build-${{ github.sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Validate Frontend
-        working-directory: ./frontend
-        run: echo "Frontend validation completed"
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # Parallel Test und Lint Ausführung
+      - name: Run All Tests and Linting
+        run: |
+          # Frontend Tests & Linting
+          cd frontend
+          npm run lint & # Run in background
+          npm run lint:css & # Run in background
+          echo "Skipping tests with --passWithNoTests flag" &
+
+          # Backend Tests & Linting
+          cd ../backend
+          mvn checkstyle:check & # Run in background
+          mvn test -DexcludedGroups="integration" & # Run in background
+          mvn verify -Pintegration-test & # Run in background
+
+          # SQL Linting
+          pip install sqlfluff &
+          
+          # Wait for all background jobs
+          wait
+
+  jira-integration:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Login to Jira
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [install, linting, unittest, integrationtest]
+    needs: [test-and-lint]
     if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      # Restore Docker cache
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+          docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions || true
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
@@ -172,8 +166,8 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker images
-        run: docker-compose build && docker-compose push
-
-      - name: Deploy with Docker Compose
-        run: docker-compose up -d
+      - name: Build and Deploy
+        run: |
+          docker-compose build
+          docker-compose push
+          docker-compose up -d
