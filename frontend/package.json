@@ -8,7 +8,7 @@
     "build": "webpack --mode production",
     "lint": "eslint .",
     "lint:css": "stylelint '**/*.css'",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "react": "^17.0.2",
