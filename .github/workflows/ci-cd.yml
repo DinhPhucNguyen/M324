@@ -3,10 +3,10 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - master
+      - Auth
   pull_request:
     branches:
-      - master
+      - Auth
 
 jobs:
   jira-integration:
@@ -74,12 +74,10 @@ jobs:
         run: |
           npm run lint || true
           npm run lint:css || true
-
       - name: SQL Linting
         run: |
           pip install sqlfluff
           find ./backend/src/main/resources -name "*.sql" -type f -exec sqlfluff lint {} \;
-
   unittest:
     runs-on: ubuntu-latest
     needs: build
@@ -155,6 +153,13 @@ jobs:
         run: |
           docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions || true
 
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+      - name: Install Loki Docker Plugin
+        run: |
+          docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions || true
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
@@ -166,3 +171,8 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: docker-compose up -d
+        
+env:
+  CLIENT_ID: ${{ secrets.CLIENT_ID }}
+  CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+

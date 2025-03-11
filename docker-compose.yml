@@ -19,9 +19,8 @@ services:
     networks:
       - chat-network
     logging:
-      driver: loki
-      options:
-        loki-url: "http://loki:3100/loki/api/v1/push"
+      driver: "json-file"
+
   frontend:
     build: ./frontend
     ports:
@@ -31,9 +30,8 @@ services:
     networks:
       - chat-network
     logging:
-      driver: loki
-      options:
-        loki-url: "http://loki:3100/loki/api/v1/push"
+      driver: "json-file"
+
   db:
     image: mysql:8.0
     environment:
@@ -51,9 +49,8 @@ services:
     networks:
       - chat-network
     logging:
-      driver: loki
-      options:
-        loki-url: "http://loki:3100/loki/api/v1/push"
+      driver: "json-file"
+
   grafana:
     image: grafana/grafana:latest
     ports:
@@ -68,6 +65,9 @@ services:
     depends_on:
       - prometheus
       - loki
+    logging:
+      driver: "json-file"
+
   prometheus:
     image: prom/prometheus:latest
     ports:
@@ -79,6 +79,9 @@ services:
       - chat-network
     depends_on:
       - backend
+    logging:
+      driver: "json-file"
+
   loki:
     image: grafana/loki:latest
     ports:
@@ -87,6 +90,8 @@ services:
       - loki_data:/loki
     networks:
       - chat-network
+    logging:
+      driver: "json-file"
 
 volumes:
   mysql_data:
