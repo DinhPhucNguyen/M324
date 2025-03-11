@@ -1,5 +1,5 @@
 Gruppenchat-Projekt Gruppe 9
-🙊Phuc 🙉Berzan 🙈MUhamednafi
+🙊Phuc 🙉Berzan 🙈Muhamednafi
 
 📚 Projektbeschreibung
 
