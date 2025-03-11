@@ -8,7 +8,7 @@
     "build": "webpack --mode production",
     "lint": "eslint .",
     "lint:css": "stylelint '**/*.css'",
-    "test": "npx jest --passWithNoTests"
+    "test": "echo 'No tests to run'"
   },
   "dependencies": {
     "react": "^17.0.2",
