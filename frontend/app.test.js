@@ -41,6 +41,20 @@ describe('Chat App Functions', () => {
   beforeEach(() => {
     // Reset mocks before each test
     jest.clearAllMocks();
+
+    // Reinitialize DOM Mocks
+    document.getElementById = jest.fn().mockImplementation((id) => {
+      if (id === 'username') return { value: 'testUser' };
+      if (id === 'message') return { value: 'Test message', focus: jest.fn() };
+      if (id === 'chat') return { appendChild: jest.fn(), scrollTop: 0, scrollHeight: 100 };
+      if (id === 'userList') return { innerHTML: '' };
+      if (id === 'messageInput') return { 
+        value: 'Test message', 
+        addEventListener: jest.fn(),
+        focus: jest.fn()
+      };
+      return { style: {}, innerHTML: '', value: '', addEventListener: jest.fn() };
+    });
   });
 
   test('connect should initialize WebSocket connection', () => {
