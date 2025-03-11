@@ -1,0 +1,60 @@
+package com.example.websocket_demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@DataJpaTest
+public class MessageRepositoryTest {
+
+    @Autowired
+    private TestEntityManager entityManager;
+
+    @Autowired
+    private MessageRepository messageRepository;
+
+    @Test
+    public void testSaveMessage() {
+        // Given
+        Message message = new Message();
+        message.setContent("Test message");
+        message.setUsername("testuser");
+        message.setCreatedAt(LocalDateTime.now());
+
+        // When
+        Message savedMessage = messageRepository.save(message);
+
+        // Then
+        assertNotNull(savedMessage.getId());
+        assertEquals("Test message", savedMessage.getContent());
+        assertEquals("testuser", savedMessage.getUsername());
+    }
+
+    @Test
+    public void testFindAllMessages() {
+        // Given
+        Message message1 = new Message();
+        message1.setContent("Message 1");
+        message1.setUsername("testuser");
+        message1.setCreatedAt(LocalDateTime.now());
+        entityManager.persist(message1);
+
+        Message message2 = new Message();
+        message2.setContent("Message 2");
+        message2.setUsername("testuser");
+        message2.setCreatedAt(LocalDateTime.now());
+        entityManager.persist(message2);
+
+        // When
+        List<Message> messages = messageRepository.findAll();
+
+        // Then
+        assertEquals(2, messages.size());
+    }
+}
