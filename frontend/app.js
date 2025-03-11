@@ -127,19 +127,26 @@ function sendMessage() {
     }
 }
 
-// Event-Listener für Enter-Taste bei Nachrichteneingabe
-document.getElementById('messageInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        sendMessage();
-    }
-});
-
 // Event-Listener für Enter-Taste bei Username-Eingabe
 document.getElementById('usernameInput').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
         setUsername();
     }
 });
+
+function init() {
+    // Alle Event-Listener hier platzieren
+    const messageInput = document.getElementById('messageInput');
+    if (messageInput) {
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    }
+    
+    // Weitere Event-Listener...
+}
 
 // Initial WebSocket-Verbindung herstellen
 connect();
@@ -150,6 +157,10 @@ if (typeof module !== 'undefined') {
     connect,
     setUsername,
     addMessage,
-    sendMessage
+    sendMessage,
+    init // Initialisierungsfunktion exportieren
   };
+} else {
+    // Nur im Browser ausführen, nicht in der Test-Umgebung
+    window.addEventListener('DOMContentLoaded', init);
 } 
