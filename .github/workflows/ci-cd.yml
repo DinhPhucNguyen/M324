@@ -3,10 +3,10 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - master
+      - Auth
   pull_request:
     branches:
-      - master
+      - Auth
 
 jobs:
   jira-integration:
