@@ -1,7 +1,7 @@
 // __tests__/app.test.js
 
 // Importiere die zu testenden Funktionen
-const { connect, setUsername, addMessage, sendMessage } = require('../app');
+const { connect, setUsername, addMessage, sendMessage } = require('./app');
 
 // Mock für WebSocket
 global.WebSocket = jest.fn().mockImplementation(() => ({
