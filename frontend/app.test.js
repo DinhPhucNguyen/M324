@@ -19,6 +19,15 @@ document.getElementById = jest.fn().mockImplementation((id) => {
   return { style: {}, innerHTML: '', value: '', addEventListener: jest.fn() };
 });
 
+// Mock für WebSocket
+global.WebSocket = jest.fn().mockImplementation(() => ({
+  send: jest.fn(),
+  close: jest.fn(),
+  addEventListener: jest.fn(),
+  readyState: 1,
+  OPEN: 1
+}));
+
 // Mock für WebSocket-Instanz
 global.stompClient = {
   send: jest.fn()
