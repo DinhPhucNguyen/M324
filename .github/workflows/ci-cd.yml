@@ -30,24 +30,24 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+          cache: 'npm'
 
       - name: Install npm packages
         working-directory: ./frontend
         run: |
-          npm install
-          npm install eslint eslint-config-prettier prettier stylelint stylelint-config-standard --save-dev
-          npm install jest --save-dev
+          npm ci
+          npm install --save-dev eslint eslint-config-prettier prettier stylelint stylelint-config-standard jest
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
 
       - name: Install Docker Compose
         run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+          sudo apt-get update && sudo apt-get install -y docker-compose
 
       - name: Install Loki Docker Plugin
         run: |
@@ -72,18 +72,18 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Backend Linting (Java)
-        run: |
-          mvn -f ./backend/pom.xml checkstyle:check
+        run: mvn -f ./backend/pom.xml checkstyle:check
 
       - name: Frontend Linting (JavaScript/CSS)
         working-directory: ./frontend
         run: |
-          npm run lint || true
-          npm run lint:css || true
+          npm run lint --if-present
+          npm run lint:css --if-present
 
       - name: SQL Linting
         run: |
-          pip install sqlfluff
+          pip install --upgrade pip
+          pip install sqlfluff || true
           find ./backend/src/main/resources -name "*.sql" -type f -exec sqlfluff lint {} \;
 
   unittest:
