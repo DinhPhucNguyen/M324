@@ -157,7 +157,6 @@ Ablauf: install → build → linting, tests (parallel) → deploy
 Wir haben diese Reihenfolge gewählt, um Fehler früh zu erkennen, den Prozess zu beschleunigen und nur getesteten Code in die Produktionsumgebung zu bringen. Die parallele Ausführung von Unit- und Integrationstests spart Zeit, und das Deployment erfolgt nur, wenn der Code stabil ist.
 
 
-
 ---------------------------------------------------------------------------
 
 
@@ -181,6 +180,7 @@ Unit Tests
 
 Testziel: Überprüfen, ob eine Nachricht über WebSocket gesendet wird.
 Warum?: Dies stellt sicher, dass Nachrichten ordnungsgemäß über die WebSocket-Verbindung an den Server gesendet werden.
+
 
 
 💻 Backend: 
