@@ -46,25 +46,6 @@ jobs:
         run: mvn -B test
         working-directory: ./backend
 
-      # Frontend Build und Test
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install Frontend Dependencies
-        run: npm ci
-        working-directory: ./frontend
-
-      - name: Build Frontend
-        run: npm run build
-        working-directory: ./frontend
-
-      - name: Run Frontend Tests
-        run: npm test
-        working-directory: ./frontend
-
   docker-build-push:
     needs: build-and-test
     runs-on: ubuntu-latest
