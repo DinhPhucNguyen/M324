@@ -137,34 +137,72 @@ docker-compose ps
 
 Ablauf: install → build → linting, tests (parallel) → deploy
 
-1. Install - Installation aller Abhängigkeiten
+1. Install
+-Was passiert? Alle nötigen Abhängigkeiten und Tools werden installiert.
+-Warum hier? Ohne die Installation können wir den Build-Prozess und Tests nicht durchführen.
+2. Build
+-Was passiert? Der Code wird kompiliert und Artefakte erstellt.
+-Warum hier? Wir stellen sicher, dass der Code korrekt gebaut wird und keine grundlegenden Fehler auftreten.
+3. Linting
+-Was passiert? Der Code wird auf Stil- und Syntaxfehler überprüft.
+-Warum nach dem Build? Wir prüfen nur den funktionierenden Code, der erfolgreich kompiliert wurde, um Zeit zu sparen.
+4. Unit-Tests und Integrationstests (gleichzeitig)
+-Was passiert? Unit-Tests prüfen einzelne Code-Einheiten, während Integrationstests das Zusammenspiel testen.
+-Warum gleichzeitig? Beide Tests decken unterschiedliche Aspekte ab, daher führen wir sie parallel aus, um Zeit zu sparen.
+5. Deploy
+-Was passiert? Der getestete Code wird in die Produktionsumgebung überführt.
+-Warum hier? Erst nach erfolgreichen Tests wird der Code in die Live-Umgebung deployt, um Fehler zu vermeiden.
+-Warum diese Reihenfolge?
 
-2. Build - Code kompilieren & Artefakte erstellen
+Wir haben diese Reihenfolge gewählt, um Fehler früh zu erkennen, den Prozess zu beschleunigen und nur getesteten Code in die Produktionsumgebung zu bringen. Die parallele Ausführung von Unit- und Integrationstests spart Zeit, und das Deployment erfolgt nur, wenn der Code stabil ist.
 
-3. Linting - Code-Qualität prüfen
 
-4. Unit- & Integrationstests (parallel)
-
-5. Deploy - Bereitstellung in der Produktionsumgebung
 
 ---------------------------------------------------------------------------
 
 
 🔧 Testing
 
-Frontend: Jest
+Unit Tests
 
-✅ connect should initialize WebSocket connection
+🌐Frontend: Jest 
 
-✅ setUsername should set the username and enable chat
+    "connect should initialize WebSocket connection:"
 
-✅ sendMessage should send message via WebSocket
+-Testziel: Überprüfen, ob die WebSocket-Verbindung korrekt initialisiert wird.
+-Warum?: Dies stellt sicher, dass die App in der Lage ist, eine WebSocket-Verbindung aufzubauen, was für die Kommunikation im Chat erforderlich ist.
 
-Backend: JUnit & Mockito
+    "setUsername should set the username and enable chat:"
 
-✅ ChatHandlerTest - Testet WebSocket-Interaktionen
+-Testziel: Überprüfen, ob der Benutzername korrekt gesetzt wird und der Chat aktiviert wird.
+-Warum?: Dieser Test stellt sicher, dass der Benutzername korrekt gespeichert wird und der Chat korrekt funktioniert, nachdem der Benutzername gesetzt wurde.
 
-✅ MessageTest - Sicherstellt, dass Nachrichten korrekt gespeichert werden
+    "sendMessage should send message via WebSocket:"
+
+Testziel: Überprüfen, ob eine Nachricht über WebSocket gesendet wird.
+Warum?: Dies stellt sicher, dass Nachrichten ordnungsgemäß über die WebSocket-Verbindung an den Server gesendet werden.
+
+
+💻 Backend: 
+
+Junit:
+Hauptsächlich für das Testen von Java-Komponenten.
+Mockito:
+Zum Mocken von Abhängigkeiten und Testen von Interaktionen.
+
+    "ChatHandlerTest:"
+-Ziel: Testet die Methoden des ChatHandler, um sicherzustellen, dass WebSocket-Verbindungen korrekt verarbeitet werden.
+-Beispiele: afterConnectionEstablished: Überprüft, ob eine neue Verbindung korrekt registriert wird.
+
+    "handleTextMessage:"
+-Testet, ob eingehende Nachrichten korrekt verarbeitet und gespeichert werden.
+
+    "MessageTest:"
+-Ziel: Überprüft die Getter und Setter der Message-Klasse.
+-Warum: Sicherstellen, dass die Datenintegrität gewahrt bleibt und die Entität korrekt funktioniert.
+
+ingesamt (10 unittest)
+
 
 Integrationstests
 
@@ -177,6 +215,12 @@ Integrationstests
     - Datenbank-Interaktionen
 
     - End-to-End Funktionalität
+      
+Warum diese Tests?
+Gesamtfunktionalität: Sicherstellen, dass alle Teile der Anwendung zusammenarbeiten.
+Fehlererkennung: Identifizieren von Problemen, die bei der Interaktion zwischen Komponenten auftreten können.
+Vertrauen in die Anwendung: Gewährleisten, dass die Anwendung in einer realistischen Umgebung korrekt funktioniert.
+Diese Tests sind entscheidend, um die Stabilität und Zuverlässigkeit der gesamten Anwendung sicherzustellen.
 
 ---------------------------------------------------------------------------
 
@@ -193,6 +237,19 @@ Integrationstests
 - Aufgabenverfolgung & Statusüberwachung über Jira
 
 - Transparente Verwaltung von Entwicklungsschritten
+
+---------------------------------------------------------------------------
+
+🛠️ Feature Branching
+Beschreibung: Verwendung von Feature-Branches für die Entwicklung neuer Funktionen.
+Vorteil: Erleichtert die Zusammenarbeit und reduziert Konflikte im Code.
+
+---------------------------------------------------------------------------
+
+💻 OAuth2-Integration mit GitHub in Grafana
+Beschreibung: Einrichtung von OAuth2 für die Authentifizierung in Grafana über GitHub.
+Vorteil: Erhöht die Sicherheit und vereinfacht die Benutzerverwaltung.
+Diese Zusatzleistungen verbessern die Qualität, Effizienz und Wartbarkeit des Projekts erheblich.
 
 ---------------------------------------------------------------------------
 
