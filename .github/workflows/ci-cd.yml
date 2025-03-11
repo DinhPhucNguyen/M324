@@ -74,4 +74,46 @@ jobs:
     - name: SQL Linting
       run: |
         pip install sqlfluff
-        find ./backend/src/main/resources -name "*.sql" -type f -exec sqlfluff lint {} \; 
+        find ./backend/src/main/resources -name "*.sql" -type f -exec sqlfluff lint {} \;
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Run tests
+        run: mvn test
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Backend Linting (Java)
+        run: mvn checkstyle:check
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Frontend Linting (JavaScript/CSS)
+        working-directory: ./frontend
+        run: |
+          npm install
+          npm install eslint eslint-config-prettier prettier stylelint stylelint-config-standard --save-dev
+          npm run lint || true
+          npm run lint:css || true
+
+      - name: SQL Linting
+        run: |
+          pip install sqlfluff
+          find ./backend/src/main/resources -name "*.sql" -type f -exec sqlfluff lint {} \; 
