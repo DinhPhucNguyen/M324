@@ -20,7 +20,7 @@ document.getElementById = jest.fn().mockImplementation((id) => {
 
 // Importiere die zu testenden Funktionen
 // Hinweis: Du musst möglicherweise deine app.js anpassen, um die Funktionen zu exportieren
-const { connect, setUsername, addMessage, sendMessage } = require('../app');
+const { connect, setUsername, addMessage, sendMessage } = require('./app');
 
 describe('Chat App Functions', () => {
   beforeEach(() => {
