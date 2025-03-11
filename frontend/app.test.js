@@ -1,13 +1,9 @@
 // __tests__/app.test.js
 
-// Mock für WebSocket
-global.WebSocket = jest.fn().mockImplementation(() => ({
-  send: jest.fn(),
-  close: jest.fn(),
-  addEventListener: jest.fn(),
-  readyState: 1,
-  OPEN: 1
-}));
+// Mock für localStorage
+global.localStorage = {
+  setItem: jest.fn()
+};
 
 // Mock für DOM-Elemente
 document.getElementById = jest.fn().mockImplementation((id) => {
@@ -22,6 +18,11 @@ document.getElementById = jest.fn().mockImplementation((id) => {
   };
   return { style: {}, innerHTML: '', value: '', addEventListener: jest.fn() };
 });
+
+// Mock für WebSocket-Instanz
+global.stompClient = {
+  send: jest.fn()
+};
 
 // Importiere die zu testenden Funktionen
 // Hinweis: Du musst möglicherweise deine app.js anpassen, um die Funktionen zu exportieren
