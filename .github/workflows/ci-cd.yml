@@ -1,14 +1,47 @@
 name: CI/CD Pipeline
 
+# Definiere die Environments
+env:
+  STAGING_URL: 'https://staging.chatapp.example.com'
+  PRODUCTION_URL: 'https://chatapp.example.com'
+  STAGING_DB: 'chatapp_staging'
+  PRODUCTION_DB: 'chatapp_prod'
+
 on:
   push:
     branches:
-      - master
+      - main
+      - staging
   pull_request:
     branches:
-      - master
+      - main
+      - staging
 
 jobs:
+  jira-integration:
+    name: Jira Integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Jira
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+      - name: Create Jira comment
+        if: github.event_name == 'pull_request'
+        uses: atlassian/gajira-comment@v3
+        with:
+          issue: ${{ github.event.pull_request.title }}
+          comment: "🔄 GitHub PR Update:\n\n${{ github.event.pull_request.html_url }}\n\nStatus: ${{ github.event.pull_request.state }}"
+
+      - name: Find and connect Jira issue
+        if: github.event_name == 'pull_request'
+        uses: atlassian/gajira-find-issue-key@v3
+        with:
+          string: ${{ github.event.pull_request.title }}
+
   install:
     runs-on: ubuntu-latest
     steps:
@@ -109,7 +142,6 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-  
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -135,12 +167,23 @@ jobs:
           npm install
           echo "Frontend validation completed"
 
-  deploy:
+  deploy-staging:
     runs-on: ubuntu-latest
     needs: [linting, unittest, integrationtest]
+    environment:
+      name: 'staging'
+      url: ${{ env.STAGING_URL }}
+    if: github.ref == 'refs/heads/staging'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -148,12 +191,58 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
-        run: docker build -t websocket_demo:latest ./backend
-
-      - name: Push Docker image
+      - name: Build and Push Staging Docker image
         uses: docker/build-push-action@v4
         with:
           context: ./backend
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/websocket_demo:latest 
+          tags: ${{ secrets.DOCKER_USERNAME }}/websocket_demo:staging
+          build-args: |
+            DB_NAME=${{ env.STAGING_DB }}
+            API_URL=${{ env.STAGING_URL }}
+
+      - name: Deploy to Staging
+        run: |
+          echo "Deploying to Staging Environment"
+          # Hier könnten Befehle für das Deployment auf Staging stehen
+          # z.B. kubectl apply oder AWS ECS Update
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    environment:
+      name: 'production'
+      url: ${{ env.PRODUCTION_URL }}
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Production Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/websocket_demo:latest
+          build-args: |
+            DB_NAME=${{ env.PRODUCTION_DB }}
+            API_URL=${{ env.PRODUCTION_URL }}
+
+      - name: Deploy to Production
+        run: |
+          echo "Deploying to Production Environment"
+          # Hier könnten Befehle für das Deployment auf Production stehen
+          # z.B. kubectl apply oder AWS ECS Update 
