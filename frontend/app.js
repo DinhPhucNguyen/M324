@@ -164,3 +164,8 @@ if (typeof module !== 'undefined') {
     // Nur im Browser ausführen, nicht in der Test-Umgebung
     window.addEventListener('DOMContentLoaded', init);
 } 
+
+// Mock für localStorage
+global.localStorage = {
+  setItem: jest.fn() // Stelle sicher, dass es ein jest.fn() ist
+}; 
