@@ -4,193 +4,151 @@ Gruppenchat-Projekt
 
 Ein Echtzeit-Gruppenchat, in dem eine Gruppe von Nutzern miteinander kommunizieren kann. Die Anwendung basiert auf Spring Boot im Backend und JavaScript mit WebSockets im Frontend. Nachrichten werden in einer MySQL-Datenbank gespeichert.
 
+---------------------------------------------------------------------------
+
 🛠️ Projektstruktur
 
 💻 Backend
-
-Technologie: Spring Boot
-
-Funktionalität: Verwaltung der WebSocket-Verbindungen & Speicherung der Nachrichten
-
-Wichtige Komponenten:
-
-ChatHandler: Verarbeitung der WebSocket-Nachrichten
-
-Message: Entität zur Speicherung von Nachrichten
+- Technologie: Spring Boot
+- Funktionalität: Verwaltung der WebSocket-Verbindungen & Speicherung der Nachrichten
+- Wichtige Komponenten:
+    - ChatHandler: Verarbeitung der WebSocket-Nachrichten
+    - Message: Entität zur Speicherung von Nachrichten
 
 🌐 Frontend
-
-Technologie: JavaScript mit WebSockets
-
-Funktionalität: Bereitstellung der Benutzeroberfläche
-
-Wichtige Dateien:
-
-app.js: WebSocket-Verbindungen & UI-Interaktionen
-
-index.html: Grundlegendes HTML-Layout
-
-styles.css: Styling der Benutzeroberfläche
+- Technologie: JavaScript mit WebSockets
+- Funktionalität: Bereitstellung der Benutzeroberfläche
+- Wichtige Dateien:
+    - app.js: WebSocket-Verbindungen & UI-Interaktionen
+    - index.html: Grundlegendes HTML-Layout
+    - styles.css: Styling der Benutzeroberfläche
 
 🏛️ Datenbank
 
-Technologie: MySQL
-
-Struktur: Eine Tabelle messages zur Speicherung der Chat-Nachrichten
+- Technologie: MySQL
+- Struktur: Eine Tabelle messages zur Speicherung der Chat-Nachrichten
 
 📊 Monitoring & Logging
 
-Grafana: Visualisierung von Metriken & Logs
+- Grafana: Visualisierung von Metriken & Logs
+- Prometheus: Sammlung & Speicherung von Metriken
+- Loki: Sammlung & Speicherung von Logs
 
-Prometheus: Sammlung & Speicherung von Metriken
-
-Loki: Sammlung & Speicherung von Logs
+---------------------------------------------------------------------------
 
 🛠️ Installation & Deployment
 
 ✅ Voraussetzungen
-
-Docker: Installiert und betriebsbereit
-
-Docker Compose: Zum gleichzeitigen Starten mehrerer Container
+- Docker: Installiert und betriebsbereit
+- Docker Compose: Zum gleichzeitigen Starten mehrerer Container
 
 ✈ Schritt-für-Schritt-Anleitung
 
-Projekt herunterladen: Klone das Repository mit git clone <repository-url>
+1. Projekt herunterladen: Klone das Repository mit git clone <repository-url>
 
-Docker starten: Stelle sicher, dass Docker aktiv ist
+2. Docker starten: Stelle sicher, dass Docker aktiv ist
 
-Terminal öffnen und ins Projektverzeichnis wechseln: cd /pfad/zum/projekt
+3. Terminal öffnen und ins Projektverzeichnis wechseln: cd /pfad/zum/projekt
 
-Anwendung starten:
-
+4. Anwendung starten:
 docker-compose up -d
+(Dadurch startet die Anwendung im Hintergrund.)
 
-Dadurch startet die Anwendung im Hintergrund.
+5. Zugriff auf die Anwendung:
+    - Frontend: http://localhost
+    - Grafana Dashboard: http://localhost:3000
+      - Anmeldedaten: admin / admin
 
-Zugriff auf die Anwendung:
-
-Frontend: http://localhost
-
-Grafana Dashboard: http://localhost:3000
-
-Anmeldedaten: admin / admin
-
-Status überprüfen:
-
+6. Status überprüfen:
 docker-compose ps
+(Zeigt den Status aller Container an.)
 
-Zeigt den Status aller Container an.
+---------------------------------------------------------------------------
 
 📝 Verwendete Tools
 
 🏰 Entwicklungs- & Projektmanagement-Tools
 
-Jira - Projektmanagement & Aufgabenverfolgung
+1. Jira - Projektmanagement & Aufgabenverfolgung
 
-GitHub - Versionskontrolle & Quellcode-Hosting
+2. GitHub - Versionskontrolle & Quellcode-Hosting
 
-GitHub Actions - CI/CD-Pipelines für Automatisierung
+3. GitHub Actions - CI/CD-Pipelines für Automatisierung
 
-Feature Branching - Entwicklung neuer Features auf separaten Branches
+4. Feature Branching - Entwicklung neuer Features auf separaten Branches
 
 🔄 Monitoring & Logging
 
-Grafana - Visualisierung von Metriken & Logs
+5. Grafana - Visualisierung von Metriken & Logs
 
-Loki - Sammlung & Speicherung von Logs
+6. Loki - Sammlung & Speicherung von Logs
 
-Prometheus - Sammlung & Speicherung von Metriken
+7. Prometheus - Sammlung & Speicherung von Metriken
 
-OAuth2-Integration mit GitHub für Grafana-Authentifizierung
+8. OAuth2-Integration mit GitHub für Grafana-Authentifizierung
 
 🛠️ Entwicklungs- & Test-Tools
 
-Node.js - Laufzeitumgebung für das Frontend
+9. Node.js - Laufzeitumgebung für das Frontend
 
-npm - Paketmanager für JavaScript-Abhängigkeiten
+10. npm - Paketmanager für JavaScript-Abhängigkeiten
 
-JDK 17 - Java Development Kit für das Backend
+11. JDK 17 - Java Development Kit für das Backend
 
-Maven - Build-Tool für das Java-Backend
+12. Maven - Build-Tool für das Java-Backend
 
-Linting Tools
+13. Linting Tools
 
-ESLint (JS-Code-Qualität)
+   - ESLint (JS-Code-Qualität)
+   - Prettier (JS-Code-Formatierung)
+   - Stylelint (CSS-Formatierung)
+   - Checkstyle (Java-Code-Qualität)
 
-Prettier (JS-Code-Formatierung)
+14. Testing-Frameworks
 
-Stylelint (CSS-Formatierung)
-
-Checkstyle (Java-Code-Qualität)
-
-Testing-Frameworks
-
-Jest (Frontend-Tests)
-
-JUnit (Backend-Tests)
-
-Mockito (Mocking für Integrationstests)
+   - Test (Frontend-Tests)
+   - JUnit (Backend-Tests)
+   - Mockito (Mocking für Integrationstests)
 
 🛢 Docker-Setup
 
-Container & Ports
+ Container & Ports
 
-Name
 
-Container
+- Name:          - Container:          - Port:
 
-Port
+- m324         - DB-1              - Kein Port
 
-m324
+- loki-1       - Loki              - 3100
 
-DB-1
+- backend-1    - Backend           - 8080
 
-Kein Port
+- prometheus-1 - Prometheus        - 9090
 
-loki-1
+- frontend-1   - Frontend          - 80
 
-Loki
+- grafana-1    - Grafana           - 3000
 
-3100
 
-backend-1
 
-Backend
-
-8080
-
-prometheus-1
-
-Prometheus
-
-9090
-
-frontend-1
-
-Frontend
-
-80
-
-grafana-1
-
-Grafana
-
-3000
+---------------------------------------------------------------------------
 
 ⚙ CI/CD Pipeline
 
 Ablauf: install → build → linting, tests (parallel) → deploy
 
-Install - Installation aller Abhängigkeiten
+1. Install - Installation aller Abhängigkeiten
 
-Build - Code kompilieren & Artefakte erstellen
+2. Build - Code kompilieren & Artefakte erstellen
 
-Linting - Code-Qualität prüfen
+3. Linting - Code-Qualität prüfen
 
-Unit- & Integrationstests (parallel)
+4. Unit- & Integrationstests (parallel)
 
-Deploy - Bereitstellung in der Produktionsumgebung
+5. Deploy - Bereitstellung in der Produktionsumgebung
+
+---------------------------------------------------------------------------
+
 
 🔧 Testing
 
@@ -210,27 +168,33 @@ Backend: JUnit & Mockito
 
 Integrationstests
 
-Technologien: JUnit, Spring Boot Test, H2-Datenbank
+- Technologien: JUnit, Spring Boot Test, H2-Datenbank
 
-Tests:
+- Tests:
 
-WebSocket-Nachrichtenverarbeitung
+    - WebSocket-Nachrichtenverarbeitung
 
-Datenbank-Interaktionen
+    - Datenbank-Interaktionen
 
-End-to-End Funktionalität
+    - End-to-End Funktionalität
+
+---------------------------------------------------------------------------
 
 📈 Monitoring mit Grafana & Loki
 
-Echtzeitüberwachung der Anwendung
+- Echtzeitüberwachung der Anwendung
 
-Analyse von Logs zur Fehlerbehebung
+- Analyse von Logs zur Fehlerbehebung
+
+---------------------------------------------------------------------------
 
 📘 Jira-Integration & Scrum
 
-Aufgabenverfolgung & Statusüberwachung über Jira
+- Aufgabenverfolgung & Statusüberwachung über Jira
 
-Transparente Verwaltung von Entwicklungsschritten
+- Transparente Verwaltung von Entwicklungsschritten
+
+---------------------------------------------------------------------------
 
 🚀 Fazit
 
