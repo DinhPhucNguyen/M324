@@ -1,3 +1,6 @@
+Gruppe 9 
+Phuc Berzan Muhamednafi
+
 Projekt 
 Ein Chat in der ein Gruppe die Zugrif ff haben sich gegenseitig anschreiben kann (Gruppenchat).
 
