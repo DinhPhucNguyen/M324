@@ -142,4 +142,14 @@ document.getElementById('usernameInput').addEventListener('keypress', function(e
 });
 
 // Initial WebSocket-Verbindung herstellen
-connect(); 
+connect();
+
+// Am Ende von app.js
+if (typeof module !== 'undefined') {
+  module.exports = {
+    connect,
+    setUsername,
+    addMessage,
+    sendMessage
+  };
+} 
